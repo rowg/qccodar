@@ -510,7 +510,7 @@ def find_files_to_concatenate(ifn, numfiles=3, sample_interval=30):
             if dt_start <= dt <= dt_end:
                 files.append(fn)
     assert len(files) <= numfiles, \
-        "Some duplicate files found since number found > numfiles needed "
+        "Number of file found > numfiles needed. Check the plist to be sure that the css interval and number of css for merge is set correctly."
     return files           
 
 def add_short_metadata(r,qccodar_values):

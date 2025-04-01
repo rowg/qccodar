@@ -271,6 +271,25 @@ Note: The RadialResponses tasks may not be necessary as later versions of the Se
 not include these files.  If the RadialResponses folders contain data, it is *extremely important* to 
 set up archiving tasks for those files, because they take up alot of space and will fill up your disk quickly!
 
+## Run qcviz to assess impact of using different test thresholds
+
+Open a Terminal window and execute the following commands.
+
+```zsh
+   conda activate qccodar
+   cd /Users/codar/qccodar_files/qccodar-main/tools
+   ipython
+ ```
+
+This will start an interactive version of Python.  At the iPython prompt, run the program using a command with these arguments:
+
+%run qcviz.py <base_path>  <pattern_type_folder> <configuration_file_with_path>
+
+For example:
+```zsh
+   %run qcviz.py /Codar/SeaSonde/Data MeasPattern /Users/codar/qccodar_files/qccodar.plist
+ ```
+The program automatically looks for a folder called "RadialMetrics" under the base path so you want to make sure that folder exists.  It then looks under that folder for the "IdealPattern" or "MeasPattern" folder to load the radial metric files.
 
 
 ## Background

@@ -51,6 +51,12 @@
 		<real>7.0</real>
 		<key>shorts_minute_filter</key>
 		<string>*[0,3]0</string>
+		<key>method</key>
+		<string>average</string>
+		<key>minvect</key>
+		<string>2</string>
+		<key>diag</key>
+		<string>4</string>
 	</dict>
 </dict>
 </plist>
