@@ -2,7 +2,7 @@
 
 This python code applies several quality (QC) functions based
 on CODAR SeaSonde (COS) Radial Metric data currently output in COS
-RadialSuite version 7.x (and versions 8.x, 21.x and 22.x upon request). There are two 
+RadialSuite version 7.x (and versions 8.x, 21.x through 24.x upon request). There are two 
 modes to this code: an auto-and manual-mode.  Auto-mode is for realtime
 processing. Manual-mode is for processing all RadialMetric files in a
 specified folder in post-processing. qccodar is intended to run beside 
@@ -10,11 +10,31 @@ specified folder in post-processing. qccodar is intended to run beside
 In fact, qccodar uses the LLUVMerger.app provided by SeaSonde to merge 
 the data back into standard SeaSonde processing methodology.
 
-## Installation
+## Automated Installation (and Uninstall)
+
+You must have a user account called codar (/Users/codar) to run the install script.
+Download or copy this text file: [qccodar_install.sh](https://github.com/rowg/qccodar/blob/main/tools/qccodar_install.sh)
+
+In Terminal, navigate to the location of the script and use the following command.  Pay attention to instructions during the installation process.
+```zsh
+   chmod 755 qccodar_install.sh
+   ./qccodar_install
+ ```
+If you try to run and get an operation not permitted error, you might have to use this command first:
+```zsh
+   xattr -d com.apple.quarantine qccodar_install.sh  
+ ```
+
+In the unlikely event that you encounter an unexpected error related to conda "which might be related to a plug-in" then WAIT 1 MINUTE for the script to continue.  After the install is over, you must edit your shell profile following step 2 of the manual installation instructions in the README file.
+
+If you need to uninstall, you may use [qccodar_uninstall.sh](https://github.com/rowg/qccodar/blob/main/tools/qccodar_uninstall.sh)
+
+## Manual Installation
 
 qccodar is a python package that runs under Python 3. 
-The following instructions describe how to install qccodar using [Miniconda3](https://conda.io/miniconda.html) and ensure that system requirements are met.
+The following instructions describe how to install qccodar using [Miniforge3](https://github.com/conda-forge/miniforge) and ensure that system requirements are met.
 At this point, please check the CODAR software requirements at the end of this file and request any key files or add-on software if necessary.
+If you already have either Miniconda3 or Mambaforge3 installed on your computer and wish to use either of those, then skip the first two steps and start with Step 3 Environment Setup.
 
 ### 1. Download
 Use one of the two instructions below depending the type of Mac computer chip.  If unsure about which to use, select "About this Mac" from the Apple icon menu at top left of the screen, and a display will appear that identifies the type of computer chip. 
@@ -23,12 +43,12 @@ Open a Terminal window to execute the following commands.
 #### For M1 chip:
 ```zsh
    cd ~/Downloads
-   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o "miniconda3.sh"
+   curl -o /Users/codar/Downloads/miniforge3.sh -L -H "User-Agent: Safari/537.36" https://github.com/conda-forge/miniforge/releases/download/24.11.3-0/Miniforge3-24.11.3-0-MacOSX-arm64.sh
  ```
 #### For Intel chip:
 ```bash
    cd ~/Downloads
-   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o "miniconda3.sh"
+   curl -o /Users/codar/Downloads/miniforge3.sh -L -H "User-Agent: Safari/537.36" https://github.com/conda-forge/miniforge/releases/download/24.11.3-0/Miniforge3-24.11.3-0-MacOSX-x86_64.sh
 ```
 
 
@@ -36,14 +56,14 @@ Open a Terminal window to execute the following commands.
 Now to install this code, update the permissions on the file and run it with the following commands:
 
 ```bash
-   chmod 755 miniconda3.sh
-   ./miniconda3.sh
+   chmod 755 miniforge3.sh
+   ./miniforge3.sh
 ```
 
 You must press Enter several times to read through the license agreement.  When prompted, type 'yes' to accept the license terms. 
-Press ENTER to confirm the install location /Users/codar/miniconda3. 
+Press ENTER to confirm the install location /Users/codar/miniforge3. 
 You will be asked if you wish to update your shell profile to automatically initialize conda. 
-Type 'yes'. After installation type 'exit' to close the shell and then open another Terminal window. 
+Answering either 'yes' or 'no' will be okay. After installation type 'exit' to close the shell and then open another Terminal window. 
 
 ### 2. Shell Setup Instructions
 
@@ -65,19 +85,19 @@ Note: If you navigate to /Users/codar in Finder, you can show this hidden file
 by pressing Command + Shift + . (the period key).
 When finished with this step, you can repeat the keystroke to restore normal file viewing.
 
-Make sure the following lines are included in the file:
+DELETE any existing sections of the file that are related to conda (they should be clearly delineated).  Delete these if they exist and then make sure the following lines are included in the file:
 
 ```zsh
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/codar/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/codar/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/codar/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/codar/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/codar/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/Users/codar/miniforge3/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/codar/miniconda3/bin:$PATH"
+        export PATH="/Users/codar/miniforge3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -99,19 +119,19 @@ Note: If you navigate to /Users/codar in Finder, you can show this hidden file
 by pressing Command + Shift + . (the period key).  
 When finished with this step, you can repeat the keystroke to restore normal file viewing.
 
-Make sure the following lines are included in the file:
+DELETE any existing sections of the file that are related to conda (they should be clearly delineated).  Delete these if they exist and then make sure the following lines are included in the file:
 
 ```bash
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/codar/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/codar/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/codar/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/codar/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/codar/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/Users/codar/miniforge3/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/codar/miniconda3/bin:$PATH"
+        export PATH="/Users/codar/miniforge3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -130,8 +150,7 @@ If it doesn't work, try sourcing the profile from the command prompt with this c
  
 Create a directory to store the qccodar files and a subdirectory to store the log files.
 ```bash
-   mkdir /Users/codar/qccodar_files
-   mkdir /Users/codar/qccodar_files/logs
+   mkdir -p /Users/codar/qccodar_files/logs
 ```
 
 Download the qccodar code by going to https://github.com/teresaupdyke/qccodar
@@ -218,8 +237,8 @@ with ```crontab -e```, then go ahead and add one or both of the following line t
 ```
 If you do not know how to edit the crontab this way, then use the following commands:
 ```bash
-crontab -l > /Users/codar/crontab_backup_copy.txt
-crontab -l > /Users/codar/mycron.txt
+   crontab -l > /Users/codar/crontab_backup_copy.txt
+   crontab -l > /Users/codar/mycron.txt
 ```
 Open the mycron.txt file in whatever editor you choose. It may be an empty file if there were no scheduled jobs.
 Add one or both of these lines 
@@ -231,11 +250,11 @@ and save the file.
  
 Then install the updated file with this command:
 ```bash
-crontab /Users/codar/mycron.txt
+   crontab /Users/codar/mycron.txt
 ```
 If you encountered any errors with crontab and need to start over, you can always restore your original file with this command:
 ```bash
-crontab /Users/codar/crontab_backup_copy.txt
+   crontab /Users/codar/crontab_backup_copy.txt
 ```
 
 After the task runs, you should see new radial files being generated in /Codar/SeaSonde/Data/RadialShorts_qcd and
@@ -248,7 +267,9 @@ After the task runs, you should see new radial files being generated in /Codar/S
 
 You must set up archiving for all of these new files, otherwise you risk filling up your computer's hard disk.
 
-The following command will set up a radial metric task list for Archivalist. (Please note that if you already have the Archivalist_RadialMetric.plist file in RadialConfigs, this will overwrite your existing file.):
+The following command will set up a radial metric task list for Archivalist. Please note that if you already have the Archivalist_RadialMetric.plist file in RadialConfigs, this will overwrite your existing file. If you prefer to set up 
+the radial metric archivalist tasks yourself, then skip this command, but please read the following IMPORTANT NOTES below.
+
 ```bash
    cp /Users/codar/qccodar_files/qccodar-main/src/qccodar/config/Archivalist_RadialMetric.plist /Codar/SeaSonde/Configs/RadialConfigs/Archivalist_RadialMetric.plist
 ```
@@ -267,9 +288,13 @@ See the CODAR Archivalist application guide if you are unfamiliar with the Archi
 /Codar/SeaSonde/Data/RadialResponses/IdealPattern   (see note below)            
 /Codar/SeaSonde/Data/RadialResponses/MeasPattern    (see note below) 
 
-Note: The RadialResponses tasks may not be necessary as later versions of the SeaSonde radial software do 
-not include these files.  If the RadialResponses folders contain data, it is *extremely important* to 
+IMPORTANT NOTES: 
+1) If the RadialResponses folders contain data, it is *extremely important* to 
 set up archiving tasks for those files, because they take up alot of space and will fill up your disk quickly!
+2) Do not set the "Limit # duplicated files in source folder" for "Metric Radials" tasks to a greater number than
+the "Limit # duplicated files in source folder" for "QCD Radial Shorts" tasks.  If you do this, 
+you'll end up unnecessarily processing the same files over and over again.
+
 
 ## Run qcviz to assess impact of using different test thresholds
 
@@ -334,10 +359,10 @@ Python 3 is required. However, earlier versions of some of the other packages ma
 
 ### CODAR Software Requirements
 - CODAR SeaSonde RadialSuite 7.x -- supports RadialMetric output out of the box
-- CODAR SeaSonde RadialSuite 8.x -- does not support RadialMetric output unless requested
+- CODAR SeaSonde RadialSuite 8.x -- must request RadialMetric output
    - Requires special key file specifically to enable RadialMetric output (contact CODAR to get)
    - Requires RadialMetric R2 Addon (contact CODAR to get)
-- CODAR SeaSonde RadialSuite 21 and 22 -- does not support RadialMetric output unless requested
+- CODAR SeaSonde RadialSuites 21 through 24 -- must request RadialMetric output
    - Requires special key file specifically to enable RadialMetric output (contact CODAR to get)
    - DOES NOT require a RadialMetric Addon
 -
